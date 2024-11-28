@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import {
+  Agency,
   AgencySidebarOption,
   SubAccount,
   SubAccountSidebarOption,
@@ -24,6 +25,9 @@ import {
   CommandList,
 } from "../ui/command";
 import Link from "next/link";
+import { useModal } from "@/providers/modal-provider";
+import CustomModal from "../global/custom-modal";
+import SubAccountDetails from "../forms/subaccount-details";
 
 type Props = {
   defaultOpen?: boolean;
@@ -44,6 +48,7 @@ const MenuOptions = ({
   user,
   defaultOpen,
 }: Props) => {
+  const { setOpen } = useModal();
   const [isMounted, setIsMounted] = useState(false);
 
   const openState = useMemo(
@@ -221,7 +226,23 @@ const MenuOptions = ({
                 </CommandList>
                 {(user?.role === "AGENCY_OWNER" ||
                   user?.role === "AGENCY_ADMIN") && (
-                  <Button className="w-full flex gap-2">
+                  <Button
+                    className="w-full flex gap-2"
+                    onClick={() => {
+                      setOpen(
+                        <CustomModal
+                          title="Create A SubAccount"
+                          subheading="You Can switch between your agency account and the subaccount from the sidebar"
+                        >
+                          <SubAccountDetails
+                            agencyDetails={user?.Agency as Agency}
+                            userId={user?.id as string}
+                            userName={user?.name}
+                          />
+                        </CustomModal>
+                      );
+                    }}
+                  >
                     <PlusCircleIcon size={15} />
                     Create Sub Account
                   </Button>

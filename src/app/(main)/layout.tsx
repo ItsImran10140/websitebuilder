@@ -7,9 +7,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <ClerkProvider
       appearance={{
         baseTheme: dark,
-        layout: {
-          unsafe_disableDevelopmentModeWarnings: true,
-        },
       }}
     >
       {children}
