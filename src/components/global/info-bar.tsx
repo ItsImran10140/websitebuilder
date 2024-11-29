@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { NotificationWithUser } from "@/lib/types";
@@ -13,10 +14,11 @@ import {
 } from "../ui/sheet";
 import { Bell } from "lucide-react";
 import { Role } from "@prisma/client";
-import { Card } from "../ui/switch";
 import { Switch } from "../ui/switch";
 import { twMerge } from "tailwind-merge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Card } from "../ui/card";
+import { ModeToggle } from "./mode-toggle";
 
 type Props = {
   notifications: NotificationWithUser | [];
@@ -54,7 +56,7 @@ const InfoBar = ({ notifications, subAccountId, className, role }: Props) => {
           <UserButton afterSignOutUrl="/" />
           <Sheet>
             <SheetTrigger>
-              <div className="rounded-full w-8 h-8 bg-primary flex items-center justify-center text-white">
+              <div className="rounded-full w-9 h-9 bg-primary flex items-center justify-center text-white">
                 <Bell size={17} />
               </div>
             </SheetTrigger>
@@ -114,6 +116,7 @@ const InfoBar = ({ notifications, subAccountId, className, role }: Props) => {
               )}
             </SheetContent>
           </Sheet>
+          <ModeToggle />
         </div>
       </div>
     </>
