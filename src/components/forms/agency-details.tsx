@@ -124,7 +124,7 @@ const AgencyDetails = ({ data }: Props) => {
             state: values.zipCode,
           },
         };
-        console.log(bodyData);
+        // console.log(bodyData);
 
         newUserData = await initUser({ role: "AGENCY_OWNER" });
 
