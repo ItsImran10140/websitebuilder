@@ -60,14 +60,14 @@ const InfoBar = ({ notifications, subAccountId, className, role }: Props) => {
                 <Bell size={17} />
               </div>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="mt-4 mr-4 pr-4 overflow-scroll">
               <SheetHeader>
                 <SheetTitle>Notifications</SheetTitle>
                 <SheetDescription>
                   {(role == "AGENCY_ADMIN" || role === "AGENCY_OWNER") && (
                     <Card className="flex items-center justify-between p-4">
                       Current Subaccount
-                      <Switch onChangeCapture={handleClick} />
+                      <Switch onCheckedChange={handleClick} />
                     </Card>
                   )}
                 </SheetDescription>
