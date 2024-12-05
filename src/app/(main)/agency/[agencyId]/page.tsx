@@ -26,7 +26,7 @@ const Page = async ({
   params,
 }: {
   params: Promise<{ agencyId: string }>;
-  searchParams: { code: string };
+  searchParams: Promise<{ code?: string }>;
 }) => {
   let currency = "USD";
   let sessions;

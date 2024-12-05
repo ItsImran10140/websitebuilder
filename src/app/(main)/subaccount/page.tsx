@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 type Props = {
-  searchParams: { state: string; code: string };
+  searchParams: Promise<{ state: string; code: string }>;
 };
 
 const SubAccountMainPage = async ({ searchParams }: Props) => {
@@ -21,12 +21,14 @@ const SubAccountMainPage = async ({ searchParams }: Props) => {
     (permission) => permission.access === true
   );
 
-  if (searchParams.state) {
-    const statePath = searchParams.state.split("___")[0];
-    const stateSubaccountId = searchParams.state.split("___")[1];
+  if ((await searchParams).state) {
+    const statePath = (await searchParams).state.split("___")[0];
+    const stateSubaccountId = (await searchParams).state.split("___")[1];
     if (!stateSubaccountId) return <Unauthorized />;
     return redirect(
-      `subaccount/${stateSubaccountId}/${statePath}/code=${searchParams.code}`
+      `subaccount/${stateSubaccountId}/${statePath}/code=${
+        (await searchParams).code
+      }`
     );
   }
 

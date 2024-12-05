@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,19 +14,25 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-type Props = {
-  params: {
-    agencyId: string;
-  };
-  searchParams: { code: string };
-};
+// type Props = {
+//   params: {
+//     agencyId: string;
+//   };
+//   searchParams: { code?: string };
+// };
 
-const LaunchPadPage = async ({ params, searchParams }: Props) => {
+const LaunchPadPage = async ({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ agencyId: string }>;
+  searchParams: Promise<{ code?: string }>;
+}) => {
   const agencyDetails = await db.agency.findUnique({
-    where: { id: params.agencyId },
+    where: { id: (await params).agencyId },
   });
 
-  if (!agencyDetails) return;
+  if (!agencyDetails) return null;
 
   const allDetailsExist =
     agencyDetails.address &&
@@ -48,18 +53,19 @@ const LaunchPadPage = async ({ params, searchParams }: Props) => {
 
   let connectedStripeAccount = false;
 
-  if (searchParams.code) {
+  if ((await searchParams).code) {
     if (!agencyDetails.connectAccountId) {
       try {
         const response = await stripe.oauth.token({
           grant_type: "authorization_code",
-          code: searchParams.code,
+          code: (await searchParams).code,
         });
         await db.agency.update({
-          where: { id: params.agencyId },
+          where: { id: (await params).agencyId },
           data: { connectAccountId: response.stripe_user_id },
         });
         connectedStripeAccount = true;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         console.log("🔴 Could not connect stripe account");
       }
@@ -138,7 +144,7 @@ const LaunchPadPage = async ({ params, searchParams }: Props) => {
               ) : (
                 <Link
                   className="bg-primary py-2 px-4 rounded-md text-white"
-                  href={`/agency/${params.agencyId}/settings`}
+                  href={`/agency/${(await params).agencyId}/settings`}
                 >
                   Start
                 </Link>

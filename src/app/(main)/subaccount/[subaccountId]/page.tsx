@@ -34,10 +34,10 @@ import Link from "next/link";
 import React from "react";
 
 type Props = {
-  params: { subaccountId: string };
-  searchParams: {
+  params: Promise<{ subaccountId: string }>;
+  searchParams: Promise<{
     code: string;
-  };
+  }>;
 };
 
 const SubaccountPageId = async ({ params, searchParams }: Props) => {
@@ -51,7 +51,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
 
   const subaccountDetails = await db.subAccount.findUnique({
     where: {
-      id: params.subaccountId,
+      id: (await params).subaccountId,
     },
   });
 
@@ -112,7 +112,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
 
   const funnels = await db.funnel.findMany({
     where: {
-      subAccountId: params.subaccountId,
+      subAccountId: (await params).subaccountId,
     },
     include: {
       FunnelPages: true,
@@ -183,7 +183,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
               </CardContent>
               <Contact2 className="absolute right-4 top-4 text-muted-foreground" />
             </Card>
-            <PipelineValue subaccountId={params.subaccountId} />
+            <PipelineValue subaccountId={(await params).subaccountId} />
 
             <Card className="xl:w-fit">
               <CardHeader>
