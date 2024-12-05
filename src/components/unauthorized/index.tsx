@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-// Some try fixes
+// Some try fixes added
 
 const Unauthorized = () => {
   return (
