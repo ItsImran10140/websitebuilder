@@ -6,7 +6,7 @@ import { currentUser } from "@clerk/nextjs";
 import React from "react";
 
 type Props = {
-  params: { subaccountId: string };
+  params: Promise<{ subaccountId: string }>;
 };
 
 const SubaccountSettingPage = async ({ params }: Props) => {
@@ -20,7 +20,7 @@ const SubaccountSettingPage = async ({ params }: Props) => {
   if (!userDetails) return;
 
   const subAccount = await db.subAccount.findUnique({
-    where: { id: params.subaccountId },
+    where: { id: (await params).subaccountId },
   });
   if (!subAccount) return;
 
@@ -43,7 +43,7 @@ const SubaccountSettingPage = async ({ params }: Props) => {
         />
         <UserDetails
           type="subaccount"
-          id={params.subaccountId}
+          id={(await params).subaccountId}
           subAccounts={subAccounts}
           userData={userDetails}
         />

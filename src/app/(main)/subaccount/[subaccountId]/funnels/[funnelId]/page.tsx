@@ -9,18 +9,18 @@ import FunnelSteps from "./_components/funnel-steps";
 import FunnelSettings from "./_components/funnel-settings";
 
 type Props = {
-  params: { funnelId: string; subaccountId: string };
+  params: Promise<{ funnelId: string; subaccountId: string }>;
 };
 
 const FunnelPage = async ({ params }: Props) => {
-  const funnelPages = await getFunnel(params.funnelId);
+  const funnelPages = await getFunnel((await params).funnelId);
   if (!funnelPages)
-    return redirect(`/subaccount/${params.subaccountId}/funnels`);
+    return redirect(`/subaccount/${(await params).subaccountId}/funnels`);
 
   return (
     <BlurPage>
       <Link
-        href={`/subaccount/${params.subaccountId}/funnels`}
+        href={`/subaccount/${(await params).subaccountId}/funnels`}
         className="flex justify-between gap-4 mb-4 text-muted-foreground"
       >
         Back
@@ -34,14 +34,14 @@ const FunnelPage = async ({ params }: Props) => {
         <TabsContent value="steps">
           <FunnelSteps
             funnel={funnelPages}
-            subaccountId={params.subaccountId}
+            subaccountId={(await params).subaccountId}
             pages={funnelPages.FunnelPages}
-            funnelId={params.funnelId}
+            funnelId={(await params).funnelId}
           />
         </TabsContent>
         <TabsContent value="settings">
           <FunnelSettings
-            subaccountId={params.subaccountId}
+            subaccountId={(await params).subaccountId}
             defaultData={funnelPages}
           />
         </TabsContent>

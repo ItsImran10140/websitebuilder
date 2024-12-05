@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from "react";
 import { stripe } from "@/lib/stripe";
@@ -46,22 +47,22 @@ const page = async ({ params }: Props) => {
     (c) => c.priceId === agencySubscription?.Subscription?.priceId
   );
 
-  const charges = await stripe.charges.list({
-    limit: 50,
-    customer: agencySubscription?.customerId,
-  });
+  // const charges = await stripe.charges.list({
+  //   limit: 50,
+  //   customer: agencySubscription?.customerId,
+  // });
 
-  const allCharges = [
-    ...charges.data.map((charge) => ({
-      description: charge.description,
-      id: charge.id,
-      date: `${new Date(charge.created * 1000).toLocaleTimeString()} ${new Date(
-        charge.created * 1000
-      ).toLocaleDateString()}`,
-      status: "Paid",
-      amount: `$${charge.amount / 100}`,
-    })),
-  ];
+  // const allCharges = [
+  //   ...charges.data.map((charge) => ({
+  //     description: charge.description,
+  //     id: charge.id,
+  //     date: `${new Date(charge.created * 1000).toLocaleTimeString()} ${new Date(
+  //       charge.created * 1000
+  //     ).toLocaleDateString()}`,
+  //     status: "Paid",
+  //     amount: `$${charge.amount / 100}`,
+  //   })),
+  // ];
 
   return (
     <>
@@ -146,7 +147,7 @@ const page = async ({ params }: Props) => {
           </TableRow>
         </TableHeader>
         <TableBody className="font-medium truncate">
-          {allCharges.map((charge) => (
+          {/* {allCharges.map((charge) => (
             <TableRow key={charge.id}>
               <TableCell>{charge.description}</TableCell>
               <TableCell className="text-muted-foreground">
@@ -167,7 +168,7 @@ const page = async ({ params }: Props) => {
               </TableCell>
               <TableCell className="text-right">{charge.amount}</TableCell>
             </TableRow>
-          ))}
+          ))} */}
         </TableBody>
       </Table>
     </>

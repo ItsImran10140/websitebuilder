@@ -17,17 +17,17 @@ import { getStripeOAuthLink } from "@/lib/utils";
 import { stripe } from "@/lib/stripe";
 
 type Props = {
-  searchParams: {
+  searchParams: Promise<{
     state: string;
     code: string;
-  };
-  params: { subaccountId: string };
+  }>;
+  params: Promise<{ subaccountId: string }>;
 };
 
 const LaunchPad = async ({ params, searchParams }: Props) => {
   const subaccountDetails = await db.subAccount.findUnique({
     where: {
-      id: params.subaccountId,
+      id: (await params).subaccountId,
     },
   });
 
@@ -52,15 +52,15 @@ const LaunchPad = async ({ params, searchParams }: Props) => {
 
   let connectedStripeAccount = false;
 
-  if (searchParams.code) {
+  if ((await searchParams).code) {
     if (!subaccountDetails.connectAccountId) {
       try {
         const response = await stripe.oauth.token({
           grant_type: "authorization_code",
-          code: searchParams.code,
+          code: (await searchParams).code,
         });
         await db.subAccount.update({
-          where: { id: params.subaccountId },
+          where: { id: (await params).subaccountId },
           data: { connectAccountId: response.stripe_user_id },
         });
         connectedStripeAccount = true;

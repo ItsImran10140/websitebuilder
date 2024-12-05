@@ -15,20 +15,22 @@ import PipelineSettings from "../_components/pipeline-settings";
 import PipelineView from "../_components/pipeline-view";
 
 type Props = {
-  params: { subaccountId: string; pipelineId: string };
+  params: Promise<{ subaccountId: string; pipelineId: string }>;
 };
 
 const PipelinesPage = async ({ params }: Props) => {
-  const pipelineDetails = await getPipelineDetails(params.pipelineId);
+  const pipelineDetails = await getPipelineDetails((await params).pipelineId);
   if (!pipelineDetails)
-    return redirect(`/subaccount/${params.subaccountId}/pipelines`);
+    return redirect(`/subaccount/${(await params).subaccountId}/pipelines`);
 
   const pipelines = await db.pipeline.findMany({
-    where: { subAccountId: params.subaccountId },
+    where: { subAccountId: (await params).subaccountId },
   });
 
   const lanes = (await getLanesWithTicketAndTags(
-    params.pipelineId
+    (
+      await params
+    ).pipelineId
   )) as LaneDetail[];
 
   return (
@@ -48,17 +50,17 @@ const PipelinesPage = async ({ params }: Props) => {
         <PipelineView
           lanes={lanes}
           pipelineDetails={pipelineDetails}
-          pipelineId={params.pipelineId}
-          subaccountId={params.subaccountId}
+          pipelineId={(await params).pipelineId}
+          subaccountId={(await params).subaccountId}
           updateLanesOrder={updateLanesOrder}
           updateTicketsOrder={updateTicketsOrder}
         />
       </TabsContent>
       <TabsContent value="settings">
         <PipelineSettings
-          pipelineId={params.pipelineId}
+          pipelineId={(await params).pipelineId}
           pipelines={pipelines}
-          subaccountId={params.subaccountId}
+          subaccountId={(await params).subaccountId}
         />
       </TabsContent>
     </Tabs>

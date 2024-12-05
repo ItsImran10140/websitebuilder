@@ -16,7 +16,7 @@ import React from "react";
 import CraeteContactButton from "./_components/create-contact-btn";
 
 type Props = {
-  params: { subaccountId: string };
+  params: Promise<{ subaccountId: string }>;
 };
 
 const ContactPage = async ({ params }: Props) => {
@@ -26,7 +26,7 @@ const ContactPage = async ({ params }: Props) => {
 
   const contacts = (await db.subAccount.findUnique({
     where: {
-      id: params.subaccountId,
+      id: (await params).subaccountId,
     },
 
     include: {
@@ -64,7 +64,7 @@ const ContactPage = async ({ params }: Props) => {
   return (
     <BlurPage>
       <h1 className="text-4xl p-4">Contacts</h1>
-      <CraeteContactButton subaccountId={params.subaccountId} />
+      <CraeteContactButton subaccountId={(await params).subaccountId} />
       <Table>
         <TableHeader>
           <TableRow>
