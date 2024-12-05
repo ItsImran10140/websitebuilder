@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,7 +27,7 @@ import DeleteButton from "./_components/delete-button";
 import CreateSubAccountButton from "./_components/create-subaccount-btn";
 
 type Props = {
-  params: { agencyId: string };
+  params: Promise<{ agencyId: string }>;
 };
 
 const AllSubAccountsPage = async ({ params }: Props) => {
@@ -40,7 +39,7 @@ const AllSubAccountsPage = async ({ params }: Props) => {
       <div className="flex flex-col">
         <CreateSubAccountButton
           user={user}
-          id={params.agencyId}
+          id={(await params).agencyId}
           className="w-[200px] self-end m-6"
         />
         <Command className="rounded-lg bg-transparent">
