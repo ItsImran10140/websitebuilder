@@ -17,7 +17,7 @@ import clsx from "clsx";
 import SubscriptionHelper from "./_components/subscription-helper";
 
 type Props = {
-  params: { agencyId: string };
+  params: Promise<{ agencyId: string }>;
 };
 
 const page = async ({ params }: Props) => {
@@ -29,7 +29,7 @@ const page = async ({ params }: Props) => {
 
   const agencySubscription = await db.agency.findUnique({
     where: {
-      id: params.agencyId,
+      id: (await params).agencyId,
     },
     select: {
       customerId: true,

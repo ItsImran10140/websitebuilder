@@ -14,7 +14,7 @@ import React from "react";
 
 type Props = {
   children: React.ReactNode;
-  params: { agencyId: string };
+  params: Promise<{ agencyId: string }>;
 };
 
 const layout = async ({ children, params }: Props) => {
@@ -41,7 +41,7 @@ const layout = async ({ children, params }: Props) => {
 
   return (
     <div className="h-screen overflow-hidden">
-      <Sidebar id={params.agencyId} type="agency" />
+      <Sidebar id={(await params).agencyId} type="agency" />
       <div className="md:pl-[300px]">
         <InfoBar notifications={allNoti} />
         <div className="relative">
