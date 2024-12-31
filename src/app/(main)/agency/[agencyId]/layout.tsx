@@ -53,5 +53,3 @@ const layout = async ({ children, params }: Props) => {
 };
 
 export default layout;
-
-// 3 hr 30 min
