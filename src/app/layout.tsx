@@ -9,7 +9,7 @@ import { Toaster as SonnarToaster } from "@/components/ui/sonner";
 const font = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "plura",
+  title: "Elevate",
   description: "All in one Agency solution",
 };
 

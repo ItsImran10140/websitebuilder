@@ -23,7 +23,7 @@ export default async function Home() {
         <p className="text-center ">Run your agency, in one place</p>
         <div className="bg-gradient-to-r from-primary to-secondary-foreground text-transparent bg-clip-text relative">
           <h1 className="text-9xl font-bold text-center md:text-[300px]">
-            Plura
+            Elevate
           </h1>
         </div>
         <div className="flex justify-center items-center relative md:mt-[-70px]">
@@ -53,7 +53,7 @@ export default async function Home() {
           {pricingCards.map((card) => (
             <Card
               key={card.title}
-              className={clsx("w-[300px] flex flex-col justify-between", {
+              className={clsx("w-[300px]  flex flex-col justify-between", {
                 "border-2 border-primary": card.title === "Unlimited Saas",
               })}
             >
@@ -72,23 +72,30 @@ export default async function Home() {
                 <span className="text-muted-foreground">/m</span>
               </CardContent>
               <CardFooter>
-                <div>
-                  {card.features.map((feature) => (
-                    <div key={feature} className="flex gap-2 items-center">
-                      <Check className="text-muted-foreground" />
-                      <p>{feature}</p>
-                    </div>
-                  ))}
+                <div className=" h-[150px] w-full">
+                  <div className="w-full">
+                    {card.features.map((feature) => (
+                      <div key={feature} className="flex gap-2 items-center">
+                        <Check className="text-muted-foreground" />
+                        <p>{feature}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-center mt-4">
+                    <Link
+                      href={`/agency?plan=${card.priceId}`}
+                      className={clsx(
+                        "w-full  text-center bg-primary p-2 rounded-md",
+                        {
+                          "!bg-muted-foreground":
+                            card.title === "Unlimited Saas",
+                        }
+                      )}
+                    >
+                      Get Started
+                    </Link>
+                  </div>
                 </div>
-                <Link
-                  href={`/agency?plan=${card.priceId}`}
-                  className={clsx(
-                    "w-full text-center bg-primary p-2 rounded-md",
-                    { "!bg-muted-foreground": card.title === "Unlimited Saas" }
-                  )}
-                >
-                  Get Started
-                </Link>
               </CardFooter>
             </Card>
           ))}
